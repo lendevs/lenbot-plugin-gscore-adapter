@@ -11,7 +11,6 @@ from websockets.protocol import State
 
 from len_bot.next.image_assets import MAX_IMAGE_BYTES
 from len_bot.next.plugin import Image, Invocation, Mention, Plugin, PluginContext, Text, command, tool
-from len_bot.next.tools.http_read import fetch_public
 
 from .protocol import AtPart, Frame, ImagePart, ImageSize, TextPart, parse_frame
 
@@ -120,11 +119,11 @@ class Gscore(Plugin):
         await self.open_connection()
         await ctx.reply('Core连接已就绪；没有重放之前的命令。')
 
-    @tool('gscore_status', '只读GSUID Core连接、实际已提交命令数和最近错误，不执行游戏命令')
-    async def status(self, ctx: Invocation) -> str:
-        return json.dumps({'connected':self.connected,'commands_submitted':self.commands_submitted,
+    @tool('gscore_status', '只读GSUID Core连接、实际已提交命令数和最近错误，不执行游戏命令', summary='查询 GSUID Core 连接状态与最近错误')
+    async def status(self, ctx: Invocation) -> dict:
+        return {'connected':self.connected,'commands_submitted':self.commands_submitted,
             'frames_received':self.frames_received,'last_error':self.last_error,
-            'note':'提交到WebSocket不代表Core已执行完成；没有自动重连或重发。'}, ensure_ascii=False)
+            'note':'提交到WebSocket不代表Core已执行完成；没有自动重连或重发。'}
 
     async def image_bytes(self, value: str) -> bytes:
         if not value.startswith('link://'):
@@ -141,11 +140,7 @@ class Gscore(Plugin):
         if (parsed.scheme not in {'http','https'} or not parsed.hostname
                 or parsed.username is not None or parsed.password is not None or parsed.fragment):
             raise ValueError('Core图片link必须为不含凭据/fragment的HTTP(S)地址')
-        timeout = self.ctx.config['timeout_seconds']
-        async with asyncio.timeout(timeout):
-            _, _, data = await fetch_public(url, timeout, lambda _type, _prefix: MAX_IMAGE_BYTES,
-                                           fake_ip_networks=self.ctx.host.config.network.networks())
-            return data
+        return await self.ctx.fetch_image(url, timeout_seconds=self.ctx.config['timeout_seconds'])
 
     async def deliver(self, frame: Frame):
         ids = None

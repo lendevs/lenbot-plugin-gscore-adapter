@@ -1,0 +1,26 @@
+{
+  "name": "gscore_adapter",
+  "title": "GSUID Core 桥接",
+  "description": "/gs桥接独立GSUID Core；图文经宿主发送，/gs连接显式重连，gscore_status读取状态。",
+  "authors": [
+    "LEN5010"
+  ],
+  "license": "AGPL-3.0-or-later",
+  "version": "1.1.0",
+  "interface": 1,
+  "requires_lenbot": ">=0.2,<1",
+  "category": "外部服务",
+  "capabilities": [
+    "Core 连接",
+    "状态查询",
+    "图文返回"
+  ],
+  "usage": [
+    "配置后选择启用的群；模型工具需要当前角色许可。",
+    "参数、共享指南与实际发送语义可在群聊工具页预览。",
+    "最低宿主基线和来源参数变更见 CHANGELOG.md。"
+  ],
+  "install": "git",
+  "repository": "https://github.com/lendevs/lenbot-plugin-gscore-adapter",
+  "ref": "main"
+}
