@@ -9,8 +9,8 @@ from urllib.parse import urlencode, urlsplit, urlunsplit
 from websockets.asyncio.client import connect
 from websockets.protocol import State
 
-from len_bot.next.image_assets import MAX_IMAGE_BYTES
-from len_bot.next.plugin import Image, Invocation, Mention, Plugin, PluginContext, Text, command, tool
+from len_bot.image_assets import MAX_IMAGE_BYTES
+from len_bot.plugin import Image, Invocation, Mention, Plugin, PluginContext, Text, command, tool
 
 from .protocol import AtPart, Frame, ImagePart, ImageSize, TextPart, parse_frame
 
