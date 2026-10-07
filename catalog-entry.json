@@ -11,14 +11,14 @@
   "requires_lenbot": ">=0.2,<1",
   "category": "外部服务",
   "capabilities": [
-    "Core 连接",
-    "状态查询",
-    "图文返回"
+    "独立 Core 服务",
+    "WebSocket",
+    "状态工具"
   ],
   "usage": [
-    "配置后选择启用的群；模型工具需要当前角色许可。",
-    "参数、共享指南与实际发送语义可在群聊工具页预览。",
-    "最低宿主基线和来源参数变更见 CHANGELOG.md。"
+    "填写独立 Core 的 ws_url 与所需令牌，再为目标群启用。",
+    "发送 /gs 命令；断线后发送 /gs连接 明确连接。",
+    "gscore_status 提供实际连接状态，是否给模型使用由角色工具许可决定。"
   ],
   "install": "git",
   "repository": "https://github.com/lendevs/lenbot-plugin-gscore-adapter",
