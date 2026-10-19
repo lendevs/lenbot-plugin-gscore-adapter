@@ -1,3 +1,7 @@
+# 1.1.1
+
+/gs 显式允许命令正文中的 @，把真实提及转交 Core；声明 send/network 宿主能力；只接入 OneBot 场景，其他平台加载时直接说明不支持。需要包含 command(allow_mentions=True) 的宿主插件接口 1。
+
 # 1.1.0
 
 需要 LenBot 0.2.0 起的插件接口 1（从 `len_bot.plugin` 导入）。插件名、配置和业务数据不变，无需数据迁移。
