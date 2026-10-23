@@ -112,18 +112,18 @@ class Gscore(Plugin):
                       'card':message.sender.card,'role':message.sender.role},'user_pm':6,'content':content})
         self.commands_submitted += 1
 
-    @command('gs连接', '明确连接一次固定Core端点；不会重放之前命令')
+    @command('gs连接', '连接一次固定的Core端点')
     async def reconnect(self, ctx: Invocation, args: str):
         if args:
             raise ValueError('/gs连接不接受参数')
         await self.open_connection()
-        await ctx.reply('Core连接已就绪；没有重放之前的命令。')
+        await ctx.reply('Core连接已就绪。')
 
-    @tool('gscore_status', '只读GSUID Core连接、实际已提交命令数和最近错误，不执行游戏命令', summary='查询 GSUID Core 连接状态与最近错误')
+    @tool('gscore_status', '读取GSUID Core连接、已提交命令数和最近错误', summary='查询 GSUID Core 连接状态与最近错误')
     async def status(self, ctx: Invocation) -> dict:
         return {'connected':self.connected,'commands_submitted':self.commands_submitted,
             'frames_received':self.frames_received,'last_error':self.last_error,
-            'note':'提交到WebSocket不代表Core已执行完成；没有自动重连或重发。'}
+            'note':'commands_submitted 是已提交到 WebSocket 的命令数，执行结果由 Core 另行返回。'}
 
     async def image_bytes(self, value: str) -> bytes:
         if not value.startswith('link://'):
