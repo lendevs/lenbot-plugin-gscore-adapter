@@ -88,3 +88,31 @@ async def test_core_image_links_reject_internal_addresses_before_http():
             assert len(record.errors) == 3
             assert all('blocked' in item['error'] for item in record.errors)
             assert http_requests == []
+
+
+@pytest.mark.asyncio
+async def test_command_body_mentions_reach_core_through_public_matching():
+    import asyncio
+    from websockets.asyncio.server import serve
+    from len_bot.plugin import Segment
+    received = asyncio.Queue()
+
+    async def core(websocket):
+        async for raw in websocket:
+            await received.put(json.loads(raw))
+
+    async with serve(core, '127.0.0.1', 0) as server:
+        config = {'ws_url': f'ws://127.0.0.1:{server.sockets[0].getsockname()[1]}'}
+        async with PluginTest(SOURCE, config=config) as bot:
+            assert await bot.message('/gs 查询 ', parts=[Segment('mention', {'user': 'onebot:70002'})])
+            request = await asyncio.wait_for(received.get(), 2)
+            assert request['content'] == [{'type': 'text', 'data': '查询'}, {'type': 'at', 'data': '70002'}]
+            assert request['user_id'] == '70001' and request['group_id'] == '80001'
+            assert not await bot.message('/gs 图片', parts=[Segment('image', {'url': 'https://example.invalid/a.png'})])
+
+
+@pytest.mark.asyncio
+async def test_non_onebot_scene_is_rejected_before_connecting():
+    with pytest.raises(RuntimeError, match='只支持 OneBot'):
+        async with PluginTest(SOURCE, scenes=['telegram:group:-10001'], config={'ws_url': 'ws://127.0.0.1:9/ws'}):
+            pass

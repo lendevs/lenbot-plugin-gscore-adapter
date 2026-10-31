@@ -4,9 +4,9 @@ LenBot 的独立插件，需要 LenBot >=0.2,<1、Python >=3.13。
 
 ## 安装
 
-在「能力 → 插件」填写 `https://github.com/lendevs/lenbot-plugin-gscore-adapter`，准备后填写配置并应用，再选择启用的群。也可以下载仓库 ZIP 导入。插件名称仍为 `gscore_adapter`，从旧内置版迁移时先更新到已移除内置插件的宿主，再安装同名插件；保持原来的参数、选群与数据目录。
+在「插件」填写 `https://github.com/lendevs/lenbot-plugin-gscore-adapter`，准备后填写配置并应用，再选择启用的群。也可以下载仓库 ZIP 导入。插件名称仍为 `gscore_adapter`，从旧内置版迁移时先更新到已移除内置插件的宿主，再安装同名插件；保持原来的参数、选群与数据目录。
 
-在根配置 `plugins.gscore_adapter` 显式填写 `ws_url`，按需要填写 `access_token`，并在相应 `scenes.<场景>.plugins` 加入 `gscore_adapter`。在「能力 → 插件」保存配置会定向重载，再选择使用场景。本插件连接已运行的 Core。
+在根配置 `plugins.gscore_adapter` 显式填写 `ws_url`，按需要填写 `access_token`，并在相应 `scenes.<场景>.plugins` 加入 `gscore_adapter`。在「插件」保存配置会定向重载，再选择使用场景。本插件连接已运行的 Core；Core 的启动和账号库由 Core 自行管理。
 
 - `/gs <命令>`：把命令提交到 Core，执行结果由 Core 返回。
 - `/gs连接`：连接已断开时再连接一次，已连接时保持现有连接。
@@ -41,3 +41,7 @@ uv run --project /path/to/LenBot --no-sync pytest -q -c pyproject.toml tests
 CI 调用 LenBot 的可复用工作流，跟随宿主 master 测试。catalog-entry.json 记录目录条目的安装来源。
 
 本机生成 ZIP（LenBot 仓库与本仓库放在同一目录下）：`uv run --no-project --python 3.13 python ../LenBot/scripts/package_plugin.py . /tmp/plugin.zip`。打包取 Git 已跟踪的运行源码和资源，新增文件需先加入 Git。
+
+## 宿主能力
+
+清单声明 `send`、`network`。这些权限约束宿主提供的能力，插件自行执行的 Python 与网络访问不受其约束。插件运行在宿主进程中，当前功能使用工具或后台协程，`isolation = "inline"`。
