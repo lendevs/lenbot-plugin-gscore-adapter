@@ -1,6 +1,7 @@
 name = "gscore_adapter"
-version = "1.1.2"
+version = "1.2.0"
 interface = 1
+chat_platforms = ["onebot"]
 permissions = ["send", "network"]
 requires_lenbot = ">=0.2,<1"
 requires_python = ">=3.13"

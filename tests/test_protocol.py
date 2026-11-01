@@ -113,6 +113,6 @@ async def test_command_body_mentions_reach_core_through_public_matching():
 
 @pytest.mark.asyncio
 async def test_non_onebot_scene_is_rejected_before_connecting():
-    with pytest.raises(RuntimeError, match='只支持 OneBot'):
+    with pytest.raises(RuntimeError, match='插件只支持 onebot 平台'):
         async with PluginTest(SOURCE, scenes=['telegram:group:-10001'], config={'ws_url': 'ws://127.0.0.1:9/ws'}):
             pass
