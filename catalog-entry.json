@@ -6,7 +6,7 @@
     "LEN5010"
   ],
   "license": "AGPL-3.0-or-later",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "interface": 1,
   "requires_lenbot": ">=0.2,<1",
   "category": "外部服务",
@@ -26,8 +26,5 @@
   "permissions": [
     "send",
     "network"
-  ],
-  "chat_platforms": [
-    "onebot"
   ]
 }

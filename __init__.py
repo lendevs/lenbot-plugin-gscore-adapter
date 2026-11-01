@@ -18,6 +18,8 @@ from .protocol import AtPart, Frame, ImagePart, ImageSize, TextPart, parse_frame
 class Gscore(Plugin):
     def __init__(self, ctx: PluginContext):
         super().__init__(ctx)
+        if any(not scene.startswith("onebot:") for scene in ctx.enabled_scenes):
+            raise ValueError("GSUID Core 桥接只支持 OneBot 场景")
         url = urlsplit(ctx.config['ws_url'])
         if (url.scheme not in {'ws','wss'} or not url.hostname or url.username is not None
                 or url.password is not None or url.query or url.fragment):
